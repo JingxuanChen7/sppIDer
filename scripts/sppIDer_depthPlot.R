@@ -15,7 +15,7 @@ outputPrefix <- args[1]
 ################################################################
 
 # docker vars
-workingDir <- "/tmp/sppIDer/working/"
+workingDir <- args[2]
 #workingDir <- ""
 
 introgressCutoff <- 0.01

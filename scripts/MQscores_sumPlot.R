@@ -13,7 +13,7 @@ strainName <- args[1]
 ################################################################
 
 # docker vars
-workingDir <- "/tmp/sppIDer/working/"
+workingDir <- args[2]
 #workingDir <- ""
 
 #Read in data and determine species

@@ -20,12 +20,14 @@ parser.add_argument('--r1', help="Read1, required", required=True)
 parser.add_argument('--r2', help="Read2, optional")
 parser.add_argument('--byBP', help="Calculate coverage by basepair, optional, DEFAULT, can't be used with -byGroup", dest='bed', action='store_true')
 parser.add_argument('--byGroup', help="Calculate coverage by chunks of same coverage, optional, can't be used with -byBP", dest='bed', action='store_false')
+parser.add_argument('--work', help="Set working Dir")
+parser.add_argument('--script', help="Set script Dir")
 parser.set_defaults(bed=True)
 args = parser.parse_args()
 
 # docker vars
-scriptDir = "/tmp/sppIDer/"
-workingDir = "/tmp/sppIDer/working/"
+scriptDir = args.script
+workingDir = args.work
 numCores = str(multiprocessing.cpu_count())
 
 outputPrefix = args.out
@@ -105,7 +107,8 @@ trackerOut.write("\nSAMTOOLS complete\nElapsed time: " + elapsedTime)
 trackerOut.close()
 
 ########################## parse SAM file ###########################
-subprocess.call(["python2.7", scriptDir + "parseSamFile.py", outputPrefix], cwd=workingDir)
+subprocess.call(["python2.7", scriptDir + "parseSamFile.py",
+                 outputPrefix, workingDir], cwd=workingDir)
 print("Parsed SAM file")
 currentTime = time.time()-start
 elapsedTime = calcElapsedTime(currentTime)
@@ -115,7 +118,8 @@ trackerOut.write("\nParsed SAM\nElapsed time: " + elapsedTime)
 trackerOut.close()
 
 ########################## plot MQ scores ###########################
-subprocess.call(["Rscript", scriptDir + "MQscores_sumPlot.R", outputPrefix], cwd=workingDir)
+subprocess.call(["Rscript", scriptDir + "MQscores_sumPlot.R",
+                 outputPrefix, workingDir], cwd=workingDir)
 print("Plotted MQ scores")
 currentTime = time.time()-start
 elapsedTime = calcElapsedTime(currentTime)
@@ -146,9 +150,11 @@ trackerOut.close()
 
 ########################## average Bed ###########################
 if args.bed == True:
-    subprocess.call(["Rscript", scriptDir + "meanDepth_sppIDer-d.R", outputPrefix], cwd=workingDir)
+    subprocess.call(["Rscript", scriptDir + "meanDepth_sppIDer-d.R",
+                     outputPrefix, workingDir], cwd=workingDir)
 else:
-    subprocess.call(["Rscript", scriptDir + "meanDepth_sppIDer-bga.R", outputPrefix], cwd=workingDir)
+    subprocess.call(["Rscript", scriptDir + "meanDepth_sppIDer-bga.R",
+                     outputPrefix, workingDir], cwd=workingDir)
 print("Found mean depth")
 currentTime = time.time()-start
 elapsedTime = calcElapsedTime(currentTime)
@@ -158,8 +164,10 @@ trackerOut.write("\nFound mean depth\nElapsed time: " + elapsedTime)
 trackerOut.close()
 
 ########################## make plot ###########################
-subprocess.call(["Rscript", scriptDir + "sppIDer_depthPlot_forSpc.R", outputPrefix], cwd=workingDir)
-subprocess.call(["Rscript", scriptDir + "sppIDer_depthPlot.R", outputPrefix], cwd=workingDir)
+subprocess.call(["Rscript", scriptDir + "sppIDer_depthPlot_forSpc.R",
+                 outputPrefix, workingDir], cwd=workingDir)
+subprocess.call(["Rscript", scriptDir + "sppIDer_depthPlot.R",
+                 outputPrefix, workingDir], cwd=workingDir)
 # if args.bed == True:
 #     subprocess.call(["Rscript", scriptDir + "sppIDer_depthPlot_forSpc.R", outputPrefix, "d"], cwd=workingDir)
 #     subprocess.call(["Rscript", scriptDir + "sppIDer_depthPlot-d.R", outputPrefix], cwd=workingDir)

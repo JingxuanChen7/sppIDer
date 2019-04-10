@@ -14,17 +14,18 @@ from Bio import SeqIO
 ################################################################
 
 # docker vars
-workingDir = "/tmp/sppIDer/working/"
+
 
 parser = argparse.ArgumentParser(description="Combine desired reference genomes")
 parser.add_argument('--out', help="Output prefix, required", required=True)
 parser.add_argument('--key', help="Key to reference genomes, required", required=True)
 parser.add_argument('--trim', help="Trim any contigs smaller than this value (for genomes in many small contigs)", default=0)
+parser.add_argument('--work', help="Set work Dir")
 args = parser.parse_args()
 comboGenomeName = args.out
 listName = args.key
 trimLength = int(args.trim)
-
+workingDir = args.work
 #Replace paths
 comboTotalLen = 0
 lengthFile = open(workingDir + "comboLength_" + comboGenomeName + ".txt", 'w')
