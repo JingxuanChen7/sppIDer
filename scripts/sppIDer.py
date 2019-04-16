@@ -22,13 +22,14 @@ parser.add_argument('--byBP', help="Calculate coverage by basepair, optional, DE
 parser.add_argument('--byGroup', help="Calculate coverage by chunks of same coverage, optional, can't be used with -byBP", dest='bed', action='store_false')
 parser.add_argument('--work', help="Set working Dir")
 parser.add_argument('--script', help="Set script Dir")
+parser.add_argument('--thread', help="Add option to set cpu number")
 parser.set_defaults(bed=True)
 args = parser.parse_args()
 
 # docker vars
 scriptDir = args.script
 workingDir = args.work
-numCores = str(multiprocessing.cpu_count())
+numCores = args.thread
 
 outputPrefix = args.out
 refGen=args.ref
