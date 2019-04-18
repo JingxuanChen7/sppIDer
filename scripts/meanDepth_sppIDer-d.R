@@ -22,7 +22,7 @@ strainName <- args[1]
 
 # docker vars
 workingDir <- args[2]
-numWin <- args[3]
+numWin <- as.numeric(args[3])
 #workingDir <- ""
 
 spcAvgFile <- paste(workingDir, strainName, "_speciesAvgDepth-d.txt", sep="")
