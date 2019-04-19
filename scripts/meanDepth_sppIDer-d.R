@@ -22,7 +22,7 @@ strainName <- args[1]
 
 # docker vars
 workingDir <- args[2]
-numWin <- as.numeric(args[3])
+stepSize <- as.numeric(args[3])
 #workingDir <- ""
 
 spcAvgFile <- paste(workingDir, strainName, "_speciesAvgDepth-d.txt", sep="")
@@ -32,7 +32,7 @@ dataFileName <- paste(workingDir, strainName, "-d.bedgraph", sep="")
 
 chrLens <- read.table(paste(workingDir, strainName, "_chrLens.txt", sep=""), header=F, col.names=c("chrom", "length"))
 genomeEnd <- sum(as.numeric(chrLens$length))
-stepSize <- signif(genomeEnd%/%numWin, digits = 2)
+#stepSize <- signif(genomeEnd%/%numWin, digits = 2)
 print(paste("Step size:", toString(stepSize), sep=" "))
 valueCol <- fread(dataFileName, select=3, col.name="value")
 totalMean <- mean(valueCol$value)

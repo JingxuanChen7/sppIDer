@@ -23,7 +23,7 @@ parser.add_argument('--byGroup', help="Calculate coverage by chunks of same cove
 parser.add_argument('--work', help="Set working Dir")
 parser.add_argument('--script', help="Set script Dir")
 parser.add_argument('--thread', help="Add option to set cpu number")
-parser.add_argument('--nwin', help="set the number of windows")
+parser.add_argument('--stepsize', help="set the window size")
 parser.set_defaults(bed=True)
 args = parser.parse_args()
 
@@ -31,7 +31,7 @@ args = parser.parse_args()
 scriptDir = args.script
 workingDir = args.work
 numCores = args.thread
-numWin = args.nwin
+stepSize = args.stepsize
 
 outputPrefix = args.out
 refGen=args.ref
@@ -154,7 +154,7 @@ trackerOut.close()
 ########################## average Bed ###########################
 if args.bed == True:
     subprocess.call(["Rscript", scriptDir + "meanDepth_sppIDer-d.R",
-                     outputPrefix, workingDir, numWin], cwd=workingDir)
+                     outputPrefix, workingDir, stepSize], cwd=workingDir)
 else:
     subprocess.call(["Rscript", scriptDir + "meanDepth_sppIDer-bga.R",
                      outputPrefix, workingDir], cwd=workingDir)
